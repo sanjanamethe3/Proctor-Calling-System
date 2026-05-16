@@ -1,0 +1,17 @@
+{
+    "name": "proctor-calling-system",
+    "description": "Comprehensive student attendance and parent notification system",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "mongodb/mongodb": "^1.13",
+        "phpoffice/phpexcel": "^1.8",
+        "phpmailer/phpmailer": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Backend\\": "backend/"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+# Enable mod_rewrite
+RewriteEngine On
+
+# Prevent access to sensitive files
+<FilesMatch "\.(env|json|config)$">
+    Deny from all
+</FilesMatch>
+
+# Redirect all requests to public directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Set headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

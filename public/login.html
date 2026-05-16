@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Proctor Calling System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .login-info {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-info h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .login-info p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        .roles-list {
+            list-style: none;
+            padding: 0;
+        }
+        .roles-list li {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .roles-list i {
+            margin-right: 8px;
+        }
+        .login-form-container {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-form-container h3 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        .btn-login-submit {
+            width: 100%;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        .btn-login-submit:hover {
+            background: #1a252f;
+        }
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        .modal-content h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .modal-content button:hover {
+            background: #5568d3;
+        }
+        .alert {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert.show {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+            }
+            .login-info {
+                padding: 40px 20px;
+            }
+            .login-form-container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <!-- Info Section -->
+        <div class="login-info">
+            <h2>Proctor Calling System</h2>
+            <p>Welcome to the integrated platform for efficient student attendance management and parent communication.</p>
+            <h4 style="margin-top: 30px; margin-bottom: 15px;">Access Roles:</h4>
+            <ul class="roles-list">
+                <li><i class="fas fa-user-shield"></i> Admin - System administration & master data</li>
+                <li><i class="fas fa-chalkboard-user"></i> Faculty - Mark attendance & manage students</li>
+                <li><i class="fas fa-users"></i> Proctor - Monitor attendance & parent calls</li>
+                <li><i class="fas fa-user-tie"></i> HOD - Access department data & reports</li>
+            </ul>
+        </div>
+
+        <!-- Login Form Section -->
+        <div class="login-form-container">
+            <h3>Login</h3>
+            <div class="alert" id="alertBox"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email/Username</label>
+                    <input type="email" id="email" placeholder="Enter your email" value="admin@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" value="admin1234" required>
+                </div>
+                <button type="submit" class="btn-login-submit">Login</button>
+            </form>
+            <div class="form-footer">
+                <a href="#" onclick="openForgotPassword(event)">Forgot password?</a>
+                <a href="#" onclick="openSignup(event)">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForgotPassword()">&times;</span>
+            <h3>Reset Password</h3>
+            <div class="alert" id="forgotAlert"></div>
+            <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+                <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                <button type="submit">Send Reset Link</button>
+            </form>
+            <p style="margin-top: 15px; color: #666; font-size: 13px; text-align: center;">
+                A password reset link will be sent to your email address.
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSignup()">&times;</span>
+            <h3>Create Account</h3>
+            <div class="alert" id="signupAlert"></div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <input type="text" id="signupName" placeholder="Full Name" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <input type="password" id="signupConfirm" placeholder="Confirm Password" required>
+                <select id="signupRole" required>
+                    <option>Select Role</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="proctor">Proctor</option>
+                </select>
+                <button type="submit">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

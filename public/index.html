@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proctor Calling System - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .home-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 600px;
+        }
+        .home-container h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        .home-container p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .features {
+            text-align: left;
+            margin: 30px 0;
+        }
+        .features li {
+            margin: 10px 0;
+            color: #555;
+        }
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .btn-login, .btn-info {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-login {
+            background-color: #667eea;
+            color: white;
+        }
+        .btn-login:hover {
+            background-color: #5568d3;
+            transform: translateY(-2px);
+        }
+        .btn-info {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 2px solid #667eea;
+        }
+        .btn-info:hover {
+            background-color: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <h1><i class="fas fa-graduation-cap"></i> Proctor Calling System</h1>
+        <p>An innovative web application for efficient student attendance management and parent communication.</p>
+        
+        <div class="features">
+            <h3>Key Features:</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Multi-panel authentication (Admin, Faculty, Proctor, HOD)</li>
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Real-time attendance tracking</li>
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Automatic parent notifications</li>
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Comprehensive reporting and analytics</li>
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Student defaulter list generation</li>
+                <li><i class="fas fa-check" style="color: #66bb6a; margin-right: 10px;"></i> Excel report export</li>
+            </ul>
+        </div>
+
+        <div class="btn-container">
+            <a href="login.html" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="#" class="btn-info" onclick="alert('Documentation coming soon!')"><i class="fas fa-book"></i> Documentation</a>
+        </div>
+    </div>
+</body>
+</html>
