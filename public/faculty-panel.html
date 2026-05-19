@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Panel - Proctor Calling System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/80" alt="Faculty Profile" class="profile-img">
+                <h3 id="profileName">Faculty</h3>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="attendance">
+                    <i class="fas fa-clipboard-check"></i> Mark Attendance
+                </a>
+                <a href="#" class="nav-item" data-page="my-students">
+                    <i class="fas fa-users"></i> My Students
+                </a>
+                <a href="#" class="nav-item" data-page="attendance-report">
+                    <i class="fas fa-chart-bar"></i> Attendance Report
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search student..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-bell" title="Notifications"></i>
+                    <i class="fas fa-user" title="Profile"></i>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="content-area">
+                <!-- Mark Attendance Page -->
+                <div class="page active" id="attendance">
+                    <h2><i class="fas fa-clipboard-check"></i> Mark Attendance</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select College *</label>
+                                <select id="attendanceCollege" required>
+                                    <option>Select College</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department *</label>
+                                <select id="attendanceDepartment" required>
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Semester *</label>
+                                <select id="attendanceSemester" required>
+                                    <option>Select Semester</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select Division *</label>
+                                <select id="attendanceDivision" required>
+                                    <option>Select Division</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Subject *</label>
+                                <select id="attendanceSubject" required>
+                                    <option>Select Subject</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Attendance Date *</label>
+                                <input type="date" id="attendanceDate" required>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="loadStudentsForAttendance()"><i class="fas fa-download"></i> Load Students</button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Student Attendance</h3>
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                            <i class="fas fa-info-circle"></i> <strong>Click</strong> on a student row to mark Present (Green) or Double-click to mark Absent (Red)
+                        </p>
+                        <table class="data-table" id="attendanceTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>ROLL NO.</th>
+                                    <th>MOBILE</th>
+                                    <th style="width: 120px;">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceBody">
+                                <tr><td colspan="5" style="text-align: center; color: #999; padding: 40px;">Select filters and click Load Students</td></tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <button class="btn-primary" onclick="saveAttendance()" style="display: none;" id="saveAttendanceBtn">
+                                <i class="fas fa-save"></i> Save Attendance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Students Page -->
+                <div class="page hidden" id="my-students">
+                    <h2><i class="fas fa-users"></i> My Students</h2>
+                    
+                    <div class="table-section">
+                        <h3>Student List</h3>
+                        <div class="table-controls">
+                            <select id="filterDepartment">
+                                <option>All Departments</option>
+                            </select>
+                            <select id="filterSemester">
+                                <option>All Semesters</option>
+                            </select>
+                            <input type="text" placeholder="Search student..." id="searchStudent">
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>MOBILE</th>
+                                    <th>PARENT MOBILE</th>
+                                    <th>GENDER</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>SEMESTER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myStudentsBody">
+                                <tr><td colspan="7" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Attendance Report Page -->
+                <div class="page hidden" id="attendance-report">
+                    <h2><i class="fas fa-chart-bar"></i> Attendance Report</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select Student *</label>
+                                <select id="reportStudent" required>
+                                    <option>Select Student</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Subject *</label>
+                                <select id="reportSubject" required>
+                                    <option>Select Subject</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="date" id="reportFromDate">
+                            </div>
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="date" id="reportToDate">
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="generateReport()">
+                            <i class="fas fa-sync-alt"></i> Generate Report
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-chart-bar"></i> Attendance Statistics</h3>
+                        <div id="reportContainer" style="text-align: center; color: #999; padding: 40px;">
+                            Select student and subject to view report
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/faculty.js"></script>
+</body>
+</html>

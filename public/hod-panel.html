@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Panel - Proctor Calling System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/80" alt="HOD Profile" class="profile-img">
+                <h3 id="profileName">HOD</h3>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="hod-dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-page="manage-students">
+                    <i class="fas fa-users"></i> Manage Students
+                </a>
+                <a href="#" class="nav-item" data-page="manage-faculty">
+                    <i class="fas fa-chalkboard-user"></i> Manage Faculty
+                </a>
+                <a href="#" class="nav-item" data-page="attendance-analytics">
+                    <i class="fas fa-chart-bar"></i> Attendance Analytics
+                </a>
+                <a href="#" class="nav-item" data-page="defaulters-report">
+                    <i class="fas fa-exclamation-triangle"></i> Defaulters Report
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-bell" title="Notifications"></i>
+                    <i class="fas fa-user" title="Profile"></i>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="content-area">
+                <!-- HOD Dashboard Page -->
+                <div class="page active" id="hod-dashboard">
+                    <h2><i class="fas fa-chart-line"></i> Department Dashboard</h2>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Select College *</label>
+                        <select id="hodCollege" required>
+                            <option>Select College</option>
+                        </select>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-card green">
+                            <h3>TOTAL STUDENTS</h3>
+                            <p class="date" id="hodDate1">Today</p>
+                            <p class="number" id="hodStudentCount">0</p>
+                        </div>
+                        <div class="stat-card dark">
+                            <h3>TOTAL FACULTY</h3>
+                            <p class="date" id="hodDate2">Today</p>
+                            <p class="number" id="hodFacultyCount">0</p>
+                        </div>
+                        <div class="stat-card blue">
+                            <h3>ATTENDANCE TODAY</h3>
+                            <p class="date" id="hodDate3">Today</p>
+                            <p class="number" id="hodAttendancePercent">0%</p>
+                        </div>
+                        <div class="stat-card orange">
+                            <h3>DEFAULTERS</h3>
+                            <p class="date" id="hodDate4">Today</p>
+                            <p class="number" id="hodDefaulterCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manage Students Page -->
+                <div class="page hidden" id="manage-students">
+                    <h2><i class="fas fa-users"></i> Manage Students</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select College *</label>
+                                <select id="studentCollege" required>
+                                    <option>Select College</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department *</label>
+                                <select id="studentDepartment" required>
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="loadStudentsForHOD()">
+                            <i class="fas fa-download"></i> Load Students
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Student List</h3>
+                        <div class="table-controls">
+                            <input type="text" placeholder="Search student..." id="hodStudentSearch">
+                            <button class="btn-secondary" onclick="exportStudentList()">
+                                <i class="fas fa-file-excel"></i> Export to Excel
+                            </button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>MOBILE</th>
+                                    <th>PARENT MOBILE</th>
+                                    <th>GENDER</th>
+                                    <th>SEMESTER</th>
+                                    <th>DIVISION</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hodStudentsBody">
+                                <tr><td colspan="8" style="text-align: center; color: #999; padding: 40px;">Load students to view</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Manage Faculty Page -->
+                <div class="page hidden" id="manage-faculty">
+                    <h2><i class="fas fa-chalkboard-user"></i> Manage Faculty</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label>Select College *</label>
+                            <select id="facultyCollege" required>
+                                <option>Select College</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="loadFacultyForHOD()">
+                            <i class="fas fa-download"></i> Load Faculty
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Faculty List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>FACULTY NAME</th>
+                                    <th>EMAIL</th>
+                                    <th>MOBILE</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hodFacultyBody">
+                                <tr><td colspan="6" style="text-align: center; color: #999; padding: 40px;">Load faculty to view</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Attendance Analytics Page -->
+                <div class="page hidden" id="attendance-analytics">
+                    <h2><i class="fas fa-chart-bar"></i> Attendance Analytics</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select College *</label>
+                                <select id="analyticsCollege" required>
+                                    <option>Select College</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Month *</label>
+                                <input type="month" id="analyticsMonth" required>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="generateAttendanceAnalytics()">
+                            <i class="fas fa-sync-alt"></i> Generate Analytics
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-chart-bar"></i> Department Attendance Summary</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>DEPARTMENT</th>
+                                    <th>TOTAL STUDENTS</th>
+                                    <th>AVG ATTENDANCE %</th>
+                                    <th>PRESENT</th>
+                                    <th>ABSENT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="analyticsBody">
+                                <tr><td colspan="5" style="text-align: center; color: #999; padding: 40px;">Select filters and generate analytics</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Defaulters Report Page -->
+                <div class="page hidden" id="defaulters-report">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Defaulters Report (< 75%)</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select College *</label>
+                                <select id="defaulterCollege" required>
+                                    <option>Select College</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Department *</label>
+                                <select id="defaulterDepartmentHOD" required>
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="generateDefaultersReportHOD()">
+                            <i class="fas fa-sync-alt"></i> Generate Report
+                        </button>
+                        <button class="btn-secondary" onclick="exportDefaultersReportHOD()" style="margin-left: 10px;">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-users"></i> Defaulter Students</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>ROLL NO.</th>
+                                    <th>SUBJECT</th>
+                                    <th>ATTENDANCE %</th>
+                                    <th>TOTAL CLASSES</th>
+                                    <th>ATTENDED</th>
+                                </tr>
+                            </thead>
+                            <tbody id="defaultersReportBody">
+                                <tr><td colspan="7" style="text-align: center; color: #999; padding: 40px;">Generate report to view</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/hod.js"></script>
+</body>
+</html>

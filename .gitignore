@@ -1,0 +1,45 @@
+# Node Modules
+node_modules/
+package-lock.json
+composer.lock
+
+# PHP
+vendor/
+.php_cs.cache
+
+# Environment
+.env
+.env.local
+.env.*.php
+
+# Logs
+logs/
+*.log
+backend/logs/
+
+# Uploads
+public/uploads/
+!public/uploads/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build
+dist/
+build/
+.cache/
+
+# Database
+*.db
+*.sqlite
+*.mongodb
+
+# Temporary
+temp/
+tmp/
+*.tmp

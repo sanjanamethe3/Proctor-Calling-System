@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proctor Panel - Proctor Calling System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/80" alt="Proctor Profile" class="profile-img">
+                <h3 id="profileName">Proctor</h3>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="attendance-monitoring">
+                    <i class="fas fa-eye"></i> Monitor Attendance
+                </a>
+                <a href="#" class="nav-item" data-page="defaulters">
+                    <i class="fas fa-exclamation-triangle"></i> Defaulters List
+                </a>
+                <a href="#" class="nav-item" data-page="parent-calls">
+                    <i class="fas fa-phone"></i> Parent Calls
+                </a>
+                <a href="#" class="nav-item" data-page="reports">
+                    <i class="fas fa-file-excel"></i> Reports & Export
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-bell" title="Notifications"></i>
+                    <i class="fas fa-user" title="Profile"></i>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="content-area">
+                <!-- Attendance Monitoring Page -->
+                <div class="page active" id="attendance-monitoring">
+                    <h2><i class="fas fa-eye"></i> Monitor Attendance</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select Department *</label>
+                                <select id="monitorDepartment" required>
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Division *</label>
+                                <select id="monitorDivision" required>
+                                    <option>Select Division</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date *</label>
+                                <input type="date" id="monitorDate" required>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="loadAttendanceRecords()">
+                            <i class="fas fa-download"></i> Load Records
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Attendance Records</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>SUBJECT</th>
+                                    <th>STATUS</th>
+                                    <th>MARKED BY</th>
+                                    <th>TIME</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceRecordsBody">
+                                <tr><td colspan="6" style="text-align: center; color: #999; padding: 40px;">Load records to view</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Defaulters List Page -->
+                <div class="page hidden" id="defaulters">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Defaulters List (< 75% Attendance)</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select Department *</label>
+                                <select id="defaulterDepartment" required>
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Select Subject *</label>
+                                <select id="defaulterSubject" required>
+                                    <option>Select Subject</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="generateDefaultersList()">
+                            <i class="fas fa-sync-alt"></i> Generate List
+                        </button>
+                        <button class="btn-secondary" onclick="exportDefaulters()" style="margin-left: 10px;">
+                            <i class="fas fa-file-excel"></i> Export to Excel
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-users"></i> Defaulters</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>MOBILE</th>
+                                    <th>PARENT MOBILE</th>
+                                    <th>TOTAL CLASSES</th>
+                                    <th>PRESENT</th>
+                                    <th>PERCENTAGE</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="defaultersBody">
+                                <tr><td colspan="8" style="text-align: center; color: #999; padding: 40px;">Select filters and click Generate List</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Parent Calls Page -->
+                <div class="page hidden" id="parent-calls">
+                    <h2><i class="fas fa-phone"></i> Parent Call Logging</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <form id="parentCallForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Student Name *</label>
+                                    <select id="callStudent" required>
+                                        <option>Select Student</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Parent Mobile *</label>
+                                    <input type="tel" id="callParentMobile" placeholder="Enter parent mobile" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Call Duration (minutes) *</label>
+                                    <input type="number" id="callDuration" placeholder="Duration" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Call Status *</label>
+                                    <select id="callStatus" required>
+                                        <option>Select Status</option>
+                                        <option>Connected</option>
+                                        <option>Not Connected</option>
+                                        <option>Busy</option>
+                                        <option>No Answer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Remarks</label>
+                                    <textarea id="callRemarks" placeholder="Add any remarks..." rows="2"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary"><i class="fas fa-phone"></i> Log Call</button>
+                        </form>
+                    </div>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-history"></i> Call History</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>PARENT MOBILE</th>
+                                    <th>STATUS</th>
+                                    <th>DURATION</th>
+                                    <th>DATE & TIME</th>
+                                    <th>REMARKS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="callHistoryBody">
+                                <tr><td colspan="7" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Reports & Export Page -->
+                <div class="page hidden" id="reports">
+                    <h2><i class="fas fa-file-excel"></i> Reports & Export</h2>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3>Generate Reports</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Report Type *</label>
+                                <select id="reportType" required>
+                                    <option>Select Report Type</option>
+                                    <option>Monthly Attendance Report</option>
+                                    <option>Defaulters Report</option>
+                                    <option>Parent Call Report</option>
+                                    <option>Department Summary</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Month *</label>
+                                <input type="month" id="reportMonth" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Department</label>
+                                <select id="reportDepartment">
+                                    <option>All Departments</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="generateExcelReport()">
+                            <i class="fas fa-file-excel"></i> Generate & Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/proctor.js"></script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Proctor Calling System</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/80" alt="Admin Profile" class="profile-img">
+                <h3 id="profileName">Admin</h3>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-page="masters">
+                    <i class="fas fa-cogs"></i> Masters
+                    <span class="arrow">▼</span>
+                </a>
+                <div class="submenu hidden" id="masters-submenu">
+                    <a href="#" class="submenu-item" data-page="add-college">
+                        <i class="fas fa-building"></i> Add College
+                    </a>
+                    <a href="#" class="submenu-item" data-page="add-department">
+                        <i class="fas fa-book"></i> Add Department
+                    </a>
+                    <a href="#" class="submenu-item" data-page="add-division">
+                        <i class="fas fa-layer-group"></i> Add Division
+                    </a>
+                    <a href="#" class="submenu-item" data-page="add-semester">
+                        <i class="fas fa-calendar"></i> Add Semester
+                    </a>
+                    <a href="#" class="submenu-item" data-page="add-subject">
+                        <i class="fas fa-book-open"></i> Add Subject
+                    </a>
+                    <a href="#" class="submenu-item" data-page="add-slot">
+                        <i class="fas fa-clock"></i> Add Slot
+                    </a>
+                </div>
+                <a href="#" class="nav-item" data-page="student-registration">
+                    <i class="fas fa-user-plus"></i> Student Registration
+                </a>
+                <a href="#" class="nav-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-bell" title="Notifications"></i>
+                    <i class="fas fa-user" title="Profile"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="content-area">
+                <!-- Dashboard Page -->
+                <div class="dashboard-page" id="dashboard">
+                    <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
+                    <div class="stats-container">
+                        <div class="stat-card green">
+                            <h3>TOTAL COLLEGES</h3>
+                            <p class="date" id="date1">Loading...</p>
+                            <p class="number" id="collegeCount">0</p>
+                        </div>
+                        <div class="stat-card dark">
+                            <h3>TOTAL STUDENTS</h3>
+                            <p class="date" id="date2">Loading...</p>
+                            <p class="number" id="studentCount">0</p>
+                        </div>
+                        <div class="stat-card blue">
+                            <h3>TOTAL FACULTY</h3>
+                            <p class="date" id="date3">Loading...</p>
+                            <p class="number" id="facultyCount">0</p>
+                        </div>
+                        <div class="stat-card orange">
+                            <h3>TOTAL SUBJECTS</h3>
+                            <p class="date" id="date4">Loading...</p>
+                            <p class="number" id="subjectCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add College Page -->
+                <div id="add-college" class="page hidden">
+                    <h2><i class="fas fa-building"></i> Add College</h2>
+                    <form id="collegeForm">
+                        <div class="form-group">
+                            <label>College Name *</label>
+                            <input type="text" name="name" placeholder="Enter college name" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Mobile</label>
+                                <input type="tel" name="mobile" placeholder="Enter mobile number">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" name="email" placeholder="Enter email">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Website</label>
+                                <input type="url" name="website" placeholder="Enter website URL">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="address" placeholder="Enter address">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add College</button>
+                    </form>
+
+                    <!-- College Table -->
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> College List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>COLLEGE ID</th>
+                                    <th>NAME</th>
+                                    <th>EMAIL</th>
+                                    <th>MOBILE</th>
+                                    <th>ADDRESS</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="collegeTableBody">
+                                <tr><td colspan="6" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Department Page -->
+                <div id="add-department" class="page hidden">
+                    <h2><i class="fas fa-book"></i> Add Department</h2>
+                    <form id="departmentForm">
+                        <div class="form-group">
+                            <label>College Name *</label>
+                            <select name="college_id" required id="deptCollegeSelect">
+                                <option>Select College</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Department Name *</label>
+                            <input type="text" name="name" placeholder="Enter department name (e.g., Computer Science, Electronics)" required>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Department</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Department List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>DEPT ID</th>
+                                    <th>COLLEGE</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departmentTableBody">
+                                <tr><td colspan="4" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Division Page -->
+                <div id="add-division" class="page hidden">
+                    <h2><i class="fas fa-layer-group"></i> Add Division</h2>
+                    <form id="divisionForm">
+                        <div class="form-group">
+                            <label>Department *</label>
+                            <select name="department_id" required id="divDepartmentSelect">
+                                <option>Select Department</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Division Name *</label>
+                            <input type="text" name="name" placeholder="Enter division name (e.g., A, B, C)" required>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Division</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Division List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>DIV ID</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>DIVISION</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="divisionTableBody">
+                                <tr><td colspan="4" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Semester Page -->
+                <div id="add-semester" class="page hidden">
+                    <h2><i class="fas fa-calendar"></i> Add Semester</h2>
+                    <form id="semesterForm">
+                        <div class="form-group">
+                            <label>Semester Name *</label>
+                            <input type="text" name="name" placeholder="Enter semester name (e.g., Sem 1, Sem 2)" required>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Semester</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Semester List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SEMESTER ID</th>
+                                    <th>NAME</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="semesterTableBody">
+                                <tr><td colspan="3" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Subject Page -->
+                <div id="add-subject" class="page hidden">
+                    <h2><i class="fas fa-book-open"></i> Add Subject</h2>
+                    <form id="subjectForm">
+                        <div class="form-group">
+                            <label>Department *</label>
+                            <select name="department_id" required id="subjDepartmentSelect">
+                                <option>Select Department</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Semester *</label>
+                            <select name="semester_id" required id="subjSemesterSelect">
+                                <option>Select Semester</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject Name *</label>
+                            <input type="text" name="name" placeholder="Enter subject name" required>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Subject</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Subject List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SUBJECT ID</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>SEMESTER</th>
+                                    <th>SUBJECT</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subjectTableBody">
+                                <tr><td colspan="5" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Add Slot Page -->
+                <div id="add-slot" class="page hidden">
+                    <h2><i class="fas fa-clock"></i> Add Slot</h2>
+                    <form id="slotForm">
+                        <div class="form-group">
+                            <label>Subject *</label>
+                            <select name="subject_id" required id="slotSubjectSelect">
+                                <option>Select Subject</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Time *</label>
+                                <input type="time" name="start_time" required>
+                            </div>
+                            <div class="form-group">
+                                <label>End Time *</label>
+                                <input type="time" name="end_time" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Slot</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Slot List</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SLOT ID</th>
+                                    <th>SUBJECT</th>
+                                    <th>START TIME</th>
+                                    <th>END TIME</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="slotTableBody">
+                                <tr><td colspan="5" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Student Registration Page -->
+                <div id="student-registration" class="page hidden">
+                    <h2><i class="fas fa-user-plus"></i> Add Student</h2>
+                    <form id="studentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Student Name *</label>
+                                <input type="text" name="name" placeholder="Enter student name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile *</label>
+                                <input type="tel" name="mobile" placeholder="Enter mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender *</label>
+                                <select name="gender" required>
+                                    <option>Select Gender</option>
+                                    <option>Female</option>
+                                    <option>Male</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Parent Mobile *</label>
+                                <input type="tel" name="parent_mobile" placeholder="Enter parent mobile" required>
+                            </div>
+                            <div class="form-group">
+                                <label>College *</label>
+                                <select name="college_id" required id="stdCollegeSelect">
+                                    <option>Select College</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Department *</label>
+                                <select name="department_id" required id="stdDepartmentSelect">
+                                    <option>Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Semester *</label>
+                                <select name="semester" required>
+                                    <option>Select Semester</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Division *</label>
+                                <select name="division" required id="stdDivisionSelect">
+                                    <option>Select Division</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Student</button>
+                    </form>
+
+                    <div class="table-section">
+                        <h3><i class="fas fa-list"></i> Student List</h3>
+                        <div class="table-controls">
+                            <select id="showEntries">
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                            </select>
+                            <input type="text" placeholder="Search student..." class="search-input" id="studentSearch">
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>SR.NO.</th>
+                                    <th>STUDENT NAME</th>
+                                    <th>MOBILE</th>
+                                    <th>GENDER</th>
+                                    <th>PARENT MOBILE</th>
+                                    <th>DEPARTMENT</th>
+                                    <th>SEMESTER</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <tr><td colspan="8" style="text-align: center; color: #999;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
